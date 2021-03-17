@@ -45,19 +45,11 @@ public class Controller {
 					view.printMessage("Cargando datos en el sistema...");
 					String r;
 				try {
+					modelo.cargarId();
 					r = modelo.cargarDatos();
 					view.printMessage("------------------------------------------");
 					view.printMessage(r);
-					view.printMessage("Primer video: \n titulo: "+modelo.darArreglo().firstElement().darTitulo()
-							+" \n Canal: "+modelo.darArreglo().firstElement().darCanal()
-							+" \n fecha trending: "+modelo.darArreglo().firstElement().darFechaT()
-							+" \n país: "+modelo.darArreglo().firstElement().darPais()
-							+" \n Visitas: "+modelo.darArreglo().firstElement().darViews()
-							+" \n Likes: "+modelo.darArreglo().firstElement().darLikes()
-							+" \n Dislikes: "+modelo.darArreglo().firstElement().darDislikes());
 					view.printMessage("-------");
-					modelo.cargarId();
-					view.printCategorias(modelo);
 				} catch (IOException e) {
 					
 					e.printStackTrace();
@@ -67,37 +59,21 @@ public class Controller {
 					break;
 
 				case 2:
-					view.printMessage("--------- \nSeleccione el requerimiento: ");
+					view.printMessage("Ingrese: pais, categoria");
 					dato = lector.next();
-					if(dato.equals("1")){
-						view.printMessage("Ingrese un país, numero y categoria(Str,int,str):");
-						dato = lector.next();
-						String[] i = dato.split(",");
-						ILista<YoutubeVideo> r1 = modelo.req1(i[0].replace("-"," ").trim(),Integer.parseInt(i[1]),i[2].replace("-"," ").trim());
-						if(r1!=null)
-							view.imprimirVideoReq1(r1,r1.size());
-					}
-					else if(dato.equals("2")){
-						view.printMessage("Ingrese un pais:");
-						dato = lector.next();
-						view.printMessage(modelo.req2(dato.replace("-"," ").trim()));
-					}
-					else if(dato.equals("3")){
-						view.printMessage("Ingrese una categoria:");
-						dato = lector.next();
-						view.printMessage(modelo.req3(dato.replace("-"," ").trim()));
-					}
-					else if(dato.equals("4")){
-						view.printMessage("Ingrese un país, numero y etiqueta(Str,int,str):");
-						dato = lector.next();
-						String[] i = dato.split(",");
-						ILista<YoutubeVideo> r1 = modelo.req4(i[0].replace("-"," ").trim(),Integer.parseInt(i[1]),i[2].replace("-"," ").trim());
-						if(r1!=null)
-							view.imprimirVideoReq4(r1,r1.size());
-					}
-				break;
-
-				case 3: 
+					String[] i = dato.split(",");
+					ILista<YoutubeVideo> l  = modelo.req2(i[1].replace("-", " ").trim(), i[0].replace("-", " ").trim());
+					if(l!=null)
+						view.imprimirVideoReq1(l,l.size());
+					else
+						view.printMessage("Caso especial: no hay pais con la categoria seleccionada(o escribiste mal)");
+					break;
+					
+				case 3:
+					view.printMessage("Realizando Prueba...");
+					view.printMessage("El tiempo promedio es: "+modelo.pruebaGet()+" Milisegundos");
+					break;
+				case 4: 
 					view.printMessage("--------- \n Hasta pronto !! \n---------"); 
 					lector.close();
 					fin = true;

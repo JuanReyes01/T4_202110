@@ -39,6 +39,7 @@ public class Modelo {
 	private ILista<YoutubeVideo> datos;
 	private ITablaSimbolos<String, ILista<YoutubeVideo>> tabla;
 	private Ordenamiento<YoutubeVideo> o;
+	
 	public Modelo()
 	{
 		datos = new ArregloDinamico<YoutubeVideo>();
@@ -48,12 +49,10 @@ public class Modelo {
 		
 	}	
 	
-	
-	
 	public String cargarDatos() throws IOException, ParseException{
-		long miliI = System.currentTimeMillis();
 		Reader in = new FileReader(VIDEO);
-		
+		int c = 0;
+		long tot = 0;
 		Iterable<CSVRecord> records = CSVFormat.EXCEL.parse(in);	
 		for (CSVRecord record : records) {
 		    String id = record.get(0);
@@ -81,11 +80,30 @@ public class Modelo {
 		    SimpleDateFormat formato2 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS");		   
 		    Date fechaPu = formato2.parse(fechaP);
 		    YoutubeVideo nuevo = new YoutubeVideo(id, fechaT, titulo, canal, Integer.parseInt(YoutubeVideo), fechaPu, tags, Integer.parseInt(vistas), Integer.parseInt(likes), Integer.parseInt(dislikes), Integer.parseInt(coment), foto, (nComent.equals("FALSE")?false:true), (rating.equals("FALSE")?false:true), (vidErr.equals("FALSE")?false:true), descripcion, pais);
-		    agregar(nuevo);
+		    String cat = darNombreCategoria(nuevo.darId_categoria());
+		    String key = nuevo.darPais().trim()+"-"+cat.trim();
+		    int aux2 = tabla.keySet().isPresent(key);
+		    if(aux2 ==-1){
+		    	ArregloDinamico<YoutubeVideo> valor = new ArregloDinamico<YoutubeVideo>();
+		    	valor.addLast(nuevo);
+		    	long miliI = System.currentTimeMillis();
+		    	tabla.put(key, valor);
+		    	long miliF = System.currentTimeMillis();
+		    	tot += (miliF-miliI);
+		    }
+		    else{
+		    	ArregloDinamico<YoutubeVideo> valor = (ArregloDinamico<model.logic.YoutubeVideo>) tabla.get(key);
+		    	valor.addLast(nuevo);
+		    	long miliI = System.currentTimeMillis();
+		    	tabla.put(key, valor);
+		    	long miliF = System.currentTimeMillis();
+		    	tot += (miliF-miliI); 
+		    }
+		    c++;
 		    }
 		}
-		long miliF = System.currentTimeMillis();
-		return "Tiempo de ejecución total: "+((miliF-miliI))+" milisegundos, \nTotal datos cargados: "+ datos.size();
+		float f = tot/c;
+		return "Tiempo de ejecución promedio: "+f+" milisegundos, \nTotal llaves: "+ tabla.size()+" \nTotal datos cargados: "+c ;
 	}
 
 	public void cargarId() throws IOException, FileNotFoundException{
@@ -108,6 +126,20 @@ public class Modelo {
 	
 	public void agregarCategoria(Categoria elem){
 		categorias.addLast(elem);
+	}
+	
+	/**
+	 * Da el nombre de la categoria segun el numero
+	 * @param categoria, numero de la categoria
+	 * @return el nombre de la categoria
+	 */
+	public String darNombreCategoria(int categoria){
+		for(int i=1; i<=categorias.size();i++){
+			if(categorias.getElement(i).darId()==(categoria)){
+				return categorias.getElement(i).darNombre(); 
+			}
+		}
+		return null;
 	}
 	
 	//Busqueda binaria, para practicar
@@ -140,6 +172,43 @@ public class Modelo {
 		return categorias.getElement(elem);
 	}
 
+public ILista<YoutubeVideo> req2(String categoria, String pais){
+	String key = pais+"-"+categoria;
+	if(tabla.keySet().isPresent(key)==-1)
+		return null;
+	else{
+		return tabla.get(key);
+	}
+}
+
+public int rand(){
+	return (int) (Math.random() * (datos.size())+1);
+}
+
+public long pruebaGet(){
+	int i = 0;
+	long total = 0;
+	ILista<String> llaves = tabla.keySet();
+	long miliI = 0;
+	long miliF = 0;
+	while(i<700){
+		String key = llaves.getElement(rand());
+		miliI = System.currentTimeMillis();
+		tabla.get(key);
+		miliF = System.currentTimeMillis();
+		total+=(miliF-miliI);
+		i++;
+	}
+	while(i<1000){
+		String key = (char)rand()+""+(char)rand();
+		miliI = System.currentTimeMillis();
+		tabla.get(key);
+		miliF = System.currentTimeMillis();
+		total+=(miliF-miliI);
+		i++;
+	}
+	return (total/i);
+}
 }
 
 

@@ -18,8 +18,9 @@ public class View
 		public void printMenu()
 		{
 			System.out.println("1. Inicializar estructuras de datos");
-			System.out.println("2. Requerimientos");
-			System.out.println("3. Exit");
+			System.out.println("2. Requerimiento 2");
+			System.out.println("3. Prueba .get()");
+			System.out.println("4. Exit");
 			System.out.println("Dar el numero de opcion a resolver, luego oprimir tecla Return: (e.g., 1):");
 		}
 
@@ -28,16 +29,7 @@ public class View
 			System.out.println(mensaje);
 		}		
 		
-		public void printModelo(Modelo modelo)
-		{
-			String a="[";
-			for(int i=1; i<=modelo.darTamano();i++)
-				a+=modelo.darArreglo().getElement(i)+" ";
-			a = a.trim();
-			a+="]";
-			System.out.println(a);
-		
-		}
+
 		
 		/**
 		 * Metodo que imprime una tabla con la informacion del video, se imprime desde el primero hasta s.
@@ -51,10 +43,7 @@ public class View
 			for(int i=1;i<=s;i++){
 				YoutubeVideo a = (YoutubeVideo) l.getElement(i); 
 				System.out.println("Video #"+i);
-				System.out.println(" tending_date: "+a.darFechaT());
 				System.out.println(" title: "+a.darTitulo());
-				System.out.println(" cannel_title: "+a.darCanal());
-				System.out.println(" publish_time: "+a.darFechaP());
 				System.out.println(" views: "+a.darViews());
 				System.out.println(" likes: "+a.darLikes());
 				System.out.println(" dislikes: "+a.darDislikes());

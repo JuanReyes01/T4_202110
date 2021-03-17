@@ -188,7 +188,7 @@ public boolean isEmpty() {
 public int isPresent(T element) {
 	int pos = -1;
 	for(int i=0; i<elementos.length;i++){
-		if(elementos[i]==element){
+		if(elementos[i]!=null&&(((Comparable) elementos[i]).compareTo(element))==0){
 			//Sumo 1 para devolver la posicion aparente al usuario
 			return i+1;
 		}
