@@ -1,6 +1,6 @@
 package model.data_structures;
 
-public interface ILista <T extends Comparable<T>>{
+public interface ILista <T>{
 	
 	void addFirst(T element);
 	void addLast(T element);

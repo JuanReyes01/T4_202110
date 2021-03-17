@@ -10,7 +10,7 @@ import java.util.ArrayList;
  * @param <T>
  *
  */
-public class ArregloDinamico<T extends Comparable<T>> implements ILista<T> { 
+public class ArregloDinamico<T> implements ILista<T> { 
 		/**
 		 * Capacidad maxima del arreglo
 		 */
