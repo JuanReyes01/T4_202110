@@ -90,19 +90,19 @@ public class Modelo {
 		    	tabla.put(key, valor);
 		    	long miliF = System.currentTimeMillis();
 		    	tot += (miliF-miliI);
+		    	c++;
 		    }
 		    else{
 		    	ArregloDinamico<YoutubeVideo> valor = (ArregloDinamico<model.logic.YoutubeVideo>) tabla.get(key);
 		    	valor.addLast(nuevo);
-		    	long miliI = System.currentTimeMillis();
-		    	tabla.put(key, valor);
-		    	long miliF = System.currentTimeMillis();
-		    	tot += (miliF-miliI); 
+		    	//long miliI = System.currentTimeMillis();
+		    	//tabla.put(key, valor);
+		    	//long miliF = System.currentTimeMillis();
+		    	//tot += (miliF-miliI); 
 		    }
-		    c++;
 		    }
 		}
-		float f = tot/c;
+		float f = (float) ((tot*1.0)/c);
 		return "Tiempo de ejecución promedio: "+f+" milisegundos, \nTotal llaves: "+ tabla.size()+" \nTotal datos cargados: "+c ;
 	}
 
@@ -185,7 +185,7 @@ public int rand(){
 	return (int) (Math.random() * (datos.size())+1);
 }
 
-public long pruebaGet(){
+public float pruebaGet(){
 	int i = 0;
 	long total = 0;
 	ILista<String> llaves = tabla.keySet();
@@ -207,7 +207,7 @@ public long pruebaGet(){
 		total+=(miliF-miliI);
 		i++;
 	}
-	return (total/i);
+	return (float) ((total*1.0)/i);
 }
 }
 
