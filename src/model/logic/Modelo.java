@@ -90,7 +90,6 @@ public class Modelo {
 		    	tabla.put(key, valor);
 		    	long miliF = System.currentTimeMillis();
 		    	tot += (miliF-miliI);
-		    	c++;
 		    }
 		    else{
 		    	ArregloDinamico<YoutubeVideo> valor = (ArregloDinamico<model.logic.YoutubeVideo>) tabla.get(key);
@@ -100,9 +99,10 @@ public class Modelo {
 		    	//long miliF = System.currentTimeMillis();
 		    	//tot += (miliF-miliI); 
 		    }
+		    c++;
 		    }
 		}
-		float f = (float) ((tot*1.0)/c);
+		float f = (float) ((tot*1.0)/tabla.size());
 		return "Tiempo de ejecución promedio: "+f+" milisegundos, \nTotal llaves: "+ tabla.size()+" \nTotal datos cargados: "+c ;
 	}
 
